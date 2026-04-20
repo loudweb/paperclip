@@ -99,7 +99,7 @@ For migrating an existing Paperclip instance to this fork, see [`docs/MIGRATING_
 Short version, in order:
 
 - [x] Fork baseline (`v0.0.0-loudweb-baseline`)
-- [ ] Patch 1 — per-step cost tagging
+- [x] Patch 1 — per-step cost tagging (`v0.0.1-loudweb-step-cost-tagging`)
 - [ ] `@loudweb/paperclip-control-room` plugin (MVP with quota + cost tiles)
 - [ ] Patch 2 — smart model routing for `claude_local`
 - [ ] Patch 3 — quota-aware model downgrader
