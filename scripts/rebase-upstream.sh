@@ -62,16 +62,15 @@ if [[ "$MODE" != "verify" ]]; then
   bold "==> Fetching $UPSTREAM_REMOTE/$UPSTREAM_BRANCH"
   git fetch --tags "$UPSTREAM_REMOTE" "$UPSTREAM_BRANCH"
 
-  old_tip=$(git rev-parse HEAD)
-  new_tip=$(git rev-parse "$UPSTREAM_REMOTE/$UPSTREAM_BRANCH")
-
-  if [[ "$old_tip" == "$new_tip" ]]; then
-    green "  ✓ already at upstream tip ($new_tip). Nothing to rebase."
-    exit 0
-  fi
-
   ahead=$(git rev-list --count "HEAD..$UPSTREAM_REMOTE/$UPSTREAM_BRANCH")
   behind=$(git rev-list --count "$UPSTREAM_REMOTE/$UPSTREAM_BRANCH..HEAD")
+
+  if [[ "$ahead" == "0" ]]; then
+    green "  ✓ already at upstream tip. Nothing to rebase."
+    echo ""
+    blue "    (you have $behind fork-local commit(s) on top; that's expected)"
+    exit 0
+  fi
 
   echo ""
   blue "  upstream is ahead by $ahead commit(s)"
