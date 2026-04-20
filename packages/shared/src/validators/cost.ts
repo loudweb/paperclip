@@ -12,6 +12,11 @@ export const createCostEventSchema = z.object({
   biller: z.string().min(1).optional(),
   billingType: z.enum(BILLING_TYPES).optional().default("unknown"),
   model: z.string().min(1),
+  // loudweb Patch 1: optional per-step cost attribution.
+  // stepTag = narrow sub-step (e.g. "haiku_preflight").
+  // taskKind = broad category (e.g. "orchestration").
+  stepTag: z.string().min(1).optional().nullable(),
+  taskKind: z.string().min(1).optional().nullable(),
   inputTokens: z.number().int().nonnegative().optional().default(0),
   cachedInputTokens: z.number().int().nonnegative().optional().default(0),
   outputTokens: z.number().int().nonnegative().optional().default(0),

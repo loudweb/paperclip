@@ -80,6 +80,15 @@ export interface AdapterExecutionResult {
   model?: string | null;
   billingType?: AdapterBillingType | null;
   costUsd?: number | null;
+  /**
+   * loudweb Patch 1: per-step cost attribution.
+   * Optional so unmodified adapters keep working.
+   * taskKind = broad category (e.g. "orchestration", "coding", "review").
+   * stepTag = narrower sub-step within a taskKind (e.g. "haiku_preflight",
+   * "sonnet_primary"). Patch 2 (smart model routing) populates these.
+   */
+  stepTag?: string | null;
+  taskKind?: string | null;
   resultJson?: Record<string, unknown> | null;
   runtimeServices?: AdapterRuntimeServiceReport[];
   summary?: string | null;

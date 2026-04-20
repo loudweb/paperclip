@@ -3168,6 +3168,11 @@ export function heartbeatService(db: Db) {
         biller,
         billingType,
         model: result.model ?? "unknown",
+        // loudweb Patch 1: pass through per-step attribution if the adapter
+        // reported it. Nullable — unmodified adapters omit these and the
+        // columns stay NULL.
+        stepTag: result.stepTag ?? null,
+        taskKind: result.taskKind ?? null,
         inputTokens,
         cachedInputTokens,
         outputTokens,

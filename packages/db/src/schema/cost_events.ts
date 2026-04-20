@@ -21,6 +21,12 @@ export const costEvents = pgTable(
     biller: text("biller").notNull().default("unknown"),
     billingType: text("billing_type").notNull().default("unknown"),
     model: text("model").notNull(),
+    // loudweb Patch 1: per-step cost attribution. nullable so unmodified
+    // adapters keep working and existing rows stay NULL (no backfill).
+    // taskKind = broad category (e.g. "orchestration", "coding", "review").
+    // stepTag = narrower sub-step (e.g. "haiku_preflight", "sonnet_primary").
+    stepTag: text("step_tag"),
+    taskKind: text("task_kind"),
     inputTokens: integer("input_tokens").notNull().default(0),
     cachedInputTokens: integer("cached_input_tokens").notNull().default(0),
     outputTokens: integer("output_tokens").notNull().default(0),
@@ -48,6 +54,14 @@ export const costEvents = pgTable(
     companyHeartbeatRunIdx: index("cost_events_company_heartbeat_run_idx").on(
       table.companyId,
       table.heartbeatRunId,
+    ),
+    // loudweb Patch 1: index to support "cost by step this week" queries
+    // from the Control Room plugin. Matches the existing per-dimension
+    // index pattern above.
+    companyStepOccurredIdx: index("cost_events_company_step_occurred_idx").on(
+      table.companyId,
+      table.stepTag,
+      table.occurredAt,
     ),
   }),
 );
